@@ -4,7 +4,7 @@ import time
 
 lapakrumah = []
 
-for pages in range(1,8):
+for pages in range(1,4):
     url = 'https://www.rumahku.com/dijual/tanah/page:'
 
     headers = {'user agent':
@@ -13,7 +13,7 @@ for pages in range(1,8):
 
     respons = requests.get(url+str(pages), headers=headers)
     # print(respons)
-    soup = BeautifulSoup(respons.text, 'html.parser')
+    soup = BeautifulSoup(respons.text, 'lxml')
     content = soup.findAll('div', class_='col-md-6 grid-item')
     # print(content)
     for item in content:
@@ -23,11 +23,13 @@ for pages in range(1,8):
         except:
             address = ('Tidak ada alamat')
         price = item.find('h5').text.strip()
+        pic = item.find('img')['src']
 
         info_property = {
             "name": name,
             "address": address,
-            "price": price
+            "price": price,
+            "picture": pic
         }
         lapakrumah.append(info_property)
     print(len(lapakrumah))
